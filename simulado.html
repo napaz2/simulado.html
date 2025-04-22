@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulado UNIFIO – Resp. Civil</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    h1, h3 {
+      text-align: center;
+    }
+    h1 {
+      color: #005baa;
+    }
+    h3 {
+      color: #333;
+      margin-top: -1rem;
+      font-weight: normal;
+    }
+    .question {
+      display: none;
+      margin-bottom: 2rem;
+    }
+    .question.active {
+      display: block;
+    }
+    .question h2 {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+    .options label {
+      display: block;
+      margin-bottom: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      transition: background 0.3s;
+    }
+    .options input[type="radio"] {
+      margin-right: 0.5rem;
+    }
+    .options label.correct {
+      background-color: #d4edda;
+      border-color: #28a745;
+    }
+    .options label.wrong {
+      background-color: #f8d7da;
+      border-color: #dc3545;
+    }
+    .btn {
+      padding: 0.8rem 1.2rem;
+      background: #005baa;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 1rem;
+    }
+    .btn:hover {
+      background: #003f7a;
+    }
+    #results {
+      display: none;
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 1.3rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Simulado UNIFIO – Responsabilidade Civil</h1>
+    <h3>Material elaborado pela Professora Elisângela Padilha</h3>
+    <form id="quizForm"></form>
+    <button type="button" class="btn" id="nextBtn">Próxima Questão</button>
+    <div id="results"></div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const quizData = [
+        {
+          text: `Daniel solta seu cachorro na área de lazer do condomínio, e este causa uma queda em Diana, de 80 anos. Qual alternativa está correta?`,
+          options: [
+            "Há responsabilidade civil valorada pelo critério subjetivo de Daniel.",
+            "Daniel não terá que indenizar Diana, pois não agiu com culpa.",
+            "Há responsabilidade objetiva entre Daniel e o adestrador.",
+            "Há responsabilidade objetiva apenas de Daniel.",
+            "Não há responsabilidade civil de Daniel valorada pelo critério subjetivo, em razão da ocorrência de força maior."
+          ],
+          correct: 3
+        },
+        {
+          text: `Xuxa foi atingida por uma torradeira que caiu de um prédio. Qual é a afirmativa correta?`,
+          options: [
+            "O morador pode alegar ausência de culpa para se eximir de indenizar.",
+            "Xuxa poderá cobrar indenização se demonstrar culpa ou dolo.",
+            "Xuxa não poderá cobrar danos materiais, pois não ficou com sequela.",
+            "O caso é de responsabilidade subjetiva.",
+            "Nenhuma das anteriores."
+          ],
+          correct: 4
+        },
+        {
+          text: `Passageira sofre acidente em ônibus após freada brusca por distração do motorista. Qual é a opção correta?`,
+          options: [
+            "Apenas André pode ser processado.",
+            "É responsabilidade extracontratual.",
+            "André e a empresa são subsidiariamente responsáveis.",
+            "É necessário demonstrar ação, dano, nexo causal e culpa do transportador.",
+            "Nenhuma das anteriores."
+          ],
+          correct: 3
+        },
+        {
+          text: `Assinale a opção INCORRETA sobre responsabilidade civil.`,
+          options: [
+            "O nexo causal é requisito da responsabilidade objetiva.",
+            "Pode haver responsabilidade sem culpa, mas não sem nexo causal.",
+            "Pais respondem objetivamente pelos filhos menores.",
+            "Dono do animal responde subjetivamente pelos danos causados.",
+            "Nenhuma das anteriores."
+          ],
+          correct: 3
+        },
+        {
+          text: `Vasos de plantas caem da janela de Mirtes durante ventania. Ela deve:`,
+          options: [
+            "Alegar força maior para não indenizar.",
+            "Está isenta, pois não teve intenção.",
+            "Indenizar apenas se houve dolo.",
+            "Indenizar, pois é responsável pelo dano."
+          ],
+          correct: 3
+        },
+        {
+          text: `Responsabilidade de morador cujo vaso caiu de apartamento e causou dano:`,
+          options: [
+            "Subjetiva, sem necessidade de culpa.",
+            "Objetiva, sem necessidade de culpa.",
+            "Subjetiva, se houver culpa.",
+            "Objetiva, se houver culpa.",
+            "Subjetiva, se houver dolo."
+          ],
+          correct: 1
+        },
+        {
+          text: `Cão de Beni se solta e ataca Tina. Qual a afirmação correta?`,
+          options: [
+            "Beni responde por colocar terceiros em risco.",
+            "Beni não responde, pois o animal estava em guarda.",
+            "A responsabilidade é subjetiva.",
+            "Basta o nexo causal para gerar a obrigação de indenizar."
+          ],
+          correct: 3
+        },
+        {
+          text: `João é dono de cão feroz que atacou um pedestre. João responderá:`,
+          options: [
+            "Objetivamente, salvo se provar culpa da vítima ou força maior.",
+            "Subjetivamente, sem excludentes.",
+            "Objetivamente, sem excludentes.",
+            "Subjetivamente, salvo se provar força maior.",
+            "Subjetivamente, salvo se não houve dolo ou culpa."
+          ],
+          correct: 0
+        },
+        {
+          text: `Cão escapa de canil regular e morde visitante. Cássio será:`,
+          options: [
+            "Responsável objetivo, inexistentes causas excludentes.",
+            "Não responsável, pois houve culpa exclusiva da vítima.",
+            "Responsabilidade compartilhada por culpa concorrente.",
+            "Isento, pois construiu o canil corretamente.",
+            "Isento por força maior ou caso fortuito."
+          ],
+          correct: 0
+        }
+      ];
+
+      const questions = quizData;
+      const form = document.getElementById("quizForm");
+      const nextBtn = document.getElementById("nextBtn");
+      let currentQuestion = 0;
+      let score = 0;
+
+      questions.forEach((q, idx) => {
+        const div = document.createElement("div");
+        div.className = "question" + (idx === 0 ? " active" : "");
+        div.innerHTML = `<h2>Questão ${idx + 1}: ${q.text}</h2>`;
+        const opts = document.createElement("div");
+        opts.className = "options";
+        q.options.forEach((opt, i) => {
+          const label = document.createElement("label");
+          const input = document.createElement("input");
+          input.type = "radio";
+          input.name = `q${idx}`;
+          input.value = i;
+          label.appendChild(input);
+          label.append(` ${opt}`);
+          opts.appendChild(label);
+        });
+        div.appendChild(opts);
+        form.appendChild(div);
+      });
+
+      nextBtn.addEventListener("click", function () {
+        const currentDiv = document.querySelectorAll(".question")[currentQuestion];
+        const radios = currentDiv.querySelectorAll("input[type='radio']");
+        let selected = false;
+
+        radios.forEach(radio => {
+          if (radio.checked) {
+            selected = true;
+            const selectedVal = parseInt(radio.value);
+            const label = radio.parentElement;
+            if (selectedVal === questions[currentQuestion].correct) {
+              label.classList.add("correct");
+              score++;
+            } else {
+              label.classList.add("wrong");
+              const correctRadio = [...radios].find(r => parseInt(r.value) === questions[currentQuestion].correct);
+              if (correctRadio) correctRadio.parentElement.classList.add("correct");
+            }
+          }
+        });
+
+        if (!selected) return alert("Por favor, selecione uma alternativa antes de continuar.");
+
+        currentDiv.classList.remove("active");
+        currentQuestion++;
+        const nextDiv = document.querySelectorAll(".question")[currentQuestion];
+        if (nextDiv) {
+          nextDiv.classList.add("active");
+        } else {
+          nextBtn.style.display = "none";
+          const results = document.getElementById("results");
+          results.innerHTML = `Você acertou ${score} de ${questions.length} questões.`;
+          results.style.display = "block";
+        }
+      });
+    });
+  </script>
+</body>
+</html>
